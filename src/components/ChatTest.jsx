@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 import React, {useState, useEffect} from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { Card, Avatar, Input, Typography, message } from 'antd';
+var HOST = location.origin.replace(/^http/, 'ws')
 import 'antd/dist/antd.css';
 import './index.css'
 
@@ -9,7 +10,7 @@ const { Search } = Input;
 const { Text } = Typography;
 const { Meta } = Card;
 
-const client = new W3CWebSocket(`ws://127.0.0.1:4000`);
+const client = new W3CWebSocket(`${HOST}`);
 
 function ChatTest() {
 
