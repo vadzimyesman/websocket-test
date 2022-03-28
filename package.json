@@ -22,8 +22,7 @@
     "react-scripts": "5.0.0",
     "redux": "^4.1.2",
     "sequelize": "^6.17.0",
-    "websocket": "^1.0.34",
-    "ws": "^8.5.0"
+    "websocket": "^1.0.34"
   },
   "scripts": {
     "start": "node ./server/server.js && npm build",
@@ -53,5 +52,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "engines": {
+    "node": "12.17.x"
+  }
 }
