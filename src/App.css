@@ -1,0 +1,28 @@
+.App {
+  text-align: center;
+}
+
+.article {
+  height: 105px;
+  width: 175px;
+  place-items: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  border-width: 3px;
+  border-radius: 25px;
+  box-shadow: 5px;
+  border-color: black;
+}
+
+.divWithCards{
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.gameTopDiv{
+  display: flex;
+  justify-content: space-between;
+}
