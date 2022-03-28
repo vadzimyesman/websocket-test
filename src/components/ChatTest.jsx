@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+require('dotenv').config()
 import React, {useState, useEffect} from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { Card, Avatar, Input, Typography, message } from 'antd';
@@ -10,7 +11,7 @@ const { Search } = Input;
 const { Text } = Typography;
 const { Meta } = Card;
 
-const client = new W3CWebSocket(`ws:${PORT}`);
+const client = new W3CWebSocket(`ws:http://localhost:${PORT}`);
 
 function ChatTest() {
 
