@@ -4,14 +4,14 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { Card, Avatar, Input, Typography, message } from 'antd';
 import 'antd/dist/antd.css';
 import './index.css'
-var HOST = location.origin.replace(/^http/, 'ws')
+const PORT = process.env.PORT||4000
 
 
 const { Search } = Input;
 const { Text } = Typography;
 const { Meta } = Card;
 
-const client = new W3CWebSocket(`${HOST}`);
+const client = new W3CWebSocket(`ws://127.0.0.1:${PORT}`);
 
 function ChatTest(props) {
 
