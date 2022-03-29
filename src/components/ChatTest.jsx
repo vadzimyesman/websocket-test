@@ -4,7 +4,7 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { Card, Avatar, Input, Typography, message } from 'antd';
 import 'antd/dist/antd.css';
 import './index.css'
-const  HOST = location.origin.replace(/^http/, 'ws')
+const  HOST = window.location.origin.replace(/^http/, 'ws')
 
 
 const { Search } = Input;
