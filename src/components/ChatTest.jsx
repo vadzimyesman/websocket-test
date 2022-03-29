@@ -4,8 +4,8 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { Card, Avatar, Input, Typography, message } from 'antd';
 import 'antd/dist/antd.css';
 import './index.css'
-
-const PORT = process.env.PORT || 4000
+require('dotenv').config()
+const PORT = process.env.PORT||44321||6456
 
 
 const { Search } = Input;
