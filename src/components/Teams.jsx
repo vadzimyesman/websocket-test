@@ -2,7 +2,9 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import KillGame from './KillGame'
 import CardsSet from './CardsSet'
-
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+const  HOST = window.location.origin.replace(/^http/, 'ws')
+const client = new W3CWebSocket(HOST);
 
 function Teams(props) {
 
@@ -14,6 +16,8 @@ function Teams(props) {
     const [display1, setDisplay1]=useState(true)
     const [display2, setDisplay2]=useState(true)
     const [display3, setDisplay3]=useState(true)
+    const [spyStatus, setSpystatus]=useState(false)
+    
 
     useEffect(()=>{
         axios.get(`/api/showTeams`)
@@ -33,15 +37,48 @@ function Teams(props) {
             if (res.data.blueSpy){
                 setDisplay3(false)
             }
+            if (res.data.blueSpy.includes(props.nickname)||res.data.redSpy.includes(props.nickname)){
+                setSpystatus(true)
+            }
             
         })
         .catch(err=>console.log(err))
       },[])
 
+
+      useEffect(()=>{
+        console.log("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR")
+        client.onopen = () =>{
+            console.log('WebSocket Client Connected');
+        }
+        client.onmessage = (message) => {
+            const dataFromServer = JSON.parse(message.data);
+            console.log('got reply! ', dataFromServer);
+            if (dataFromServer.msg==="New player joined!") {
+                axios.get(`/api/showTeams`)
+                .then(res=>{
+                    console.log(res.data)
+                    setRedSpy(res.data.redSpy)
+                    setBlueSpy(res.data.blueSpy)
+                    setRedAgents(res.data.redAgents)
+                    setBlueAgents(res.data.blueAgents)
+                })
+                .catch(err=>console.log(err))
+
+            }
+            
+          };
+    },[])
    
    
 
     const addRedSpy=()=>{
+        client.send(JSON.stringify({
+            type: "update",
+            msg: "New player joined!",
+            user: props.nickname
+          }));
+        setSpystatus(true)
         const body ={
             nickname:props.nickname
         }
@@ -55,9 +92,18 @@ function Teams(props) {
             setDisplay1(false)
         })
         .catch(err=>console.log(err))
+        client.send(JSON.stringify({
+            newPlayer:true
+        }))
     }
 
     const addBlueSpy=()=>{
+        client.send(JSON.stringify({
+            type: "update",
+            msg: "New player joined!",
+            user: props.nickname
+          }));
+        setSpystatus(true)
         const body = {
             nickname:props.nickname
         }
@@ -74,6 +120,11 @@ function Teams(props) {
     }
 
     const addRedAgent=()=>{
+        client.send(JSON.stringify({
+            type: "update",
+            msg: "New player joined!",
+            user: props.nickname
+          }));
         const body ={
             nickname:props.nickname
         }
@@ -90,6 +141,11 @@ function Teams(props) {
     }
 
     const addBlueAgent=()=>{
+        client.send(JSON.stringify({
+            type: "update",
+            msg: "New player joined!",
+            user: props.nickname
+          }));
         const body ={
             nickname:props.nickname
         }
@@ -146,7 +202,7 @@ function Teams(props) {
             </div>}
         </div>
     </div>
-    <CardsSet nickname={props.nickname} admin={props.admin}/>
+    {!display1 && <CardsSet nickname={props.nickname} admin={props.admin} spyStatus={spyStatus}/>}
     </div>
     
 

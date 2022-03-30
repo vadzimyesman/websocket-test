@@ -2,7 +2,10 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import CardWithWord from './CardWithWord'
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+const  HOST = window.location.origin.replace(/^http/, 'ws')
 
+const client = new W3CWebSocket(HOST);
 
 function CardsSet(props) {
 
@@ -13,8 +16,7 @@ function CardsSet(props) {
     const [grey,setGrey] = useState([])
     const [black, setBlack] = useState("")
     
-
-    useEffect(()=>{
+    const showCards = () =>{
       axios.get(`/api/showCards`)
       .then(res=>{
         console.log(res.data)
@@ -24,8 +26,34 @@ function CardsSet(props) {
         setGrey(res.data.grey)
         setBlack(res.data.black)
       })
+    }
+
+
+    useEffect(()=>{
+
+      showCards()
 
     },[])
+
+  useEffect(()=>{
+      console.log("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR")
+      client.onopen = () =>{
+          console.log('WebSocket Client Connected');
+      }
+      client.onmessage = (message) => {
+          const dataFromServer = JSON.parse(message.data);
+          console.log('got reply! ', dataFromServer);
+          if (dataFromServer.msg==="Admin got new words!") {
+    
+              showCards()
+            
+
+
+          }
+          
+        };
+  })
+    
 
     const handleClick1 = () =>{
 
@@ -43,6 +71,11 @@ function CardsSet(props) {
               })
               .catch(err=>console.log(err))
         })
+        client.send(JSON.stringify({
+          type: "update",
+          msg: "Admin got new words!",
+          user: props.nickname
+        }));
       }
 
 
@@ -57,16 +90,16 @@ function CardsSet(props) {
         {randomWords.map((element,index)=>{
 
             if(red.includes(index)){
-              return < CardWithWord key={index} randomWord={element} color={"red"}/>
+              return < CardWithWord key={index} randomWord={element} color={props.spyStatus ? "red":"burlywood"}/>
             } 
             if(blue.includes(index)){
-              return < CardWithWord key={index} randomWord={element} color={"blue"}/>
+              return < CardWithWord key={index} randomWord={element} color={props.spyStatus ? "blue":"burlywood"}/>
             } 
             if(grey.includes(index)){
-              return < CardWithWord key={index} randomWord={element} color={"grey"}/>
+              return < CardWithWord key={index} randomWord={element} color={props.spyStatus ? "grey":"burlywood"}/>
             } 
             if(black===index){
-              return < CardWithWord key={index} randomWord={element} color={"black"}/>
+              return < CardWithWord key={index} randomWord={element} color={props.spyStatus ? "black":"burlywood"}/>
             } 
         
         })}

@@ -178,7 +178,14 @@ const sequelize = new Sequelize(DATABASE_URL, {
           nickname varchar(30),
           red boolean,
           spy boolean
-          )
+          );
+          DROP TABLE words;
+          CREATE TABLE words (
+            word_id serial primary key, 
+            word varchar(30),
+            color varchar(30),
+            index integer
+          ); 
         `)
         res.status(200).send("Game killed")
       },

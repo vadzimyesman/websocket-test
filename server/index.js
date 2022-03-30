@@ -55,6 +55,18 @@ wsServer.on('request', function (request){
      }
  })
 
+ connection.on('update', function(update) {
+    if (update.type === 'update') {
+        console.log('OOOOOOOOOOOOOOOOOOOOOOORecieved update: ', update.msg[0])
+
+
+        //broadcasting message to all connected clients
+        for (key in clients){
+            clients[key].sendUTF(update.utf8Data)
+            console.log('sent Message to: ', clients[key])
+        }
+    }
+})
 
 });
 
