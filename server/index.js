@@ -9,7 +9,7 @@ const { client } = require('websocket');
 const PORT = process.env.PORT || 4000
 
 const {seedDataBase, loginPart, registerPart, postMessage, showAllPosts, startNewGame, adminCheck, killGame, redSpy, blueSpy, redAgent, blueAgent,
-     showTeams}= require("./controller.js")
+     showTeams, newWords, showCards}= require("./controller.js")
 
 //Spinning the http server and the websocket server.
 const server = require('http'). createServer(app);
@@ -83,6 +83,8 @@ app.post("/api/redAgent", redAgent)
 
 app.post("/api/blueAgent", blueAgent)
 
+app.post("/api/newWords", newWords)
+
 app.get("/api/show", showAllPosts)
 
 app.get("/api/adminCheck", adminCheck)
@@ -90,6 +92,8 @@ app.get("/api/adminCheck", adminCheck)
 app.get("/api/killGame", killGame)
 
 app.get("/api/showTeams", showTeams)
+
+app.get("/api/showCards", showCards)
 
 
 app.get('/*', function (req, res) {

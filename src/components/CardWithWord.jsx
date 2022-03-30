@@ -6,10 +6,12 @@ function CardWithWord(props) {
     <>
     
     <div
+    
     className='article'
-    style={{backgroundImage: `url(${cardLogo})`}}
+    //style={{backgroundImage: `url(${cardLogo})`}}
+    style={{backgroundColor: `${props.color}`}}
     >
-      <h2 className='header'>{props.randomWord}</h2>
+      <h2 className='wordCard' style={{color: `white`}}>{props.randomWord}</h2>
     </div>
 
     </>

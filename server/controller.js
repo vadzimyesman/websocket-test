@@ -389,6 +389,136 @@ const sequelize = new Sequelize(DATABASE_URL, {
           }
         })
         
+      },
+
+
+      newWords: (req,res)=>{
+        console.log(req.body)
+        
+      let coin = Math.floor(Math.random()*2+1)
+        console.log(`coin is ${coin}`)
+        let randomIndex = new Set()
+      
+        
+          while (randomIndex.size < 25){
+          
+            randomIndex.add(Math.floor(Math.random()*25))
+        } 
+          console.log(randomIndex)
+          let randomArr = [...randomIndex]
+          if (coin===1){
+            let redArr= randomArr.splice(0,9)
+            let blueArr=randomArr.splice(0,8)
+            let greyArr = randomArr.splice(0,7)
+            let blackArr = randomArr[0]
+            console.log(redArr,blueArr,greyArr,blackArr)
+            sequelize.query(`
+            DROP TABLE words;
+            CREATE TABLE words (
+              word_id serial primary key, 
+              word varchar(30),
+              color varchar(30),
+              index integer
+            ); 
+            `)
+            req.body.map((word,index)=>{
+              let color = ""
+              if (redArr.includes(index)){
+                color="red"
+              } else if (blueArr.includes(index)) {
+                color="blue"
+              } else if (greyArr.includes(index)){
+                color="grey"
+              } else {
+                color="black"
+              }
+              sequelize.query(`
+              INSERT INTO words (word,color,index)
+              VALUES ('${word}','${color}',${index});
+              `)
+            })
+            let object = {
+              red: redArr,
+              blue: blueArr,
+              grey: greyArr,
+              black: blackArr
+            }
+            res.status(200).send(object)
+          } else {
+            let redArr= randomArr.splice(0,8)
+            let blueArr=randomArr.splice(0,9)
+            let greyArr = randomArr.splice(0,7)
+            let blackArr = randomArr[0]
+            
+            console.log(redArr,blueArr,greyArr,blackArr)
+            sequelize.query(`
+            DROP TABLE words;
+            CREATE TABLE words (
+              word_id serial primary key, 
+              word varchar(30),
+              color varchar(30),
+              index integer
+            ); 
+            `)
+            req.body.map((word,index)=>{
+              let color = ""
+              if (redArr.includes(index)){
+                color="red"
+              } else if (blueArr.includes(index)) {
+                color="blue"
+              } else if (greyArr.includes(index)){
+                color="grey"
+              } else {
+                color="black"
+              }
+              sequelize.query(`
+              INSERT INTO words (word,color,index)
+              VALUES ('${word}','${color}',${index});
+              `)
+            })
+            let object = {
+              red: redArr,
+              blue: blueArr,
+              grey: greyArr,
+              black: blackArr
+            }
+            res.status(200).send(object)
+          }
+      },
+
+
+
+      showCards : (req,res)=>{
+        sequelize.query(`
+        SELECT * FROM words
+        `)
+        .then(dbRes=>{
+          
+          let object2 = {
+            red: [],
+            blue: [],
+            grey: [],
+            black: "",
+            words : []
+          }
+          console.log(dbRes[0])
+          dbRes[0].map((object)=>{
+            if (object.color=="red"){
+              object2.red.push(object.index)
+            }
+            if (object.color=="blue"){
+              object2.blue.push(object.index)
+            }
+            if (object.color=="grey"){
+              object2.grey.push(object.index)
+            }
+            if (object.color=="black"){
+              object2.black=(object.index)
+            }
+            object2.words.push(object.word)
+          })
+          res.status(200).send(object2)
+        })
       }
 
   }

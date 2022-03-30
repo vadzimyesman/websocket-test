@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
+import ChatTest from './ChatTest'
 import Teams from './Teams'
 
 function Game(props) {
@@ -8,11 +9,12 @@ function Game(props) {
     
   return (
     <div >
-        <div>
+        <div className='gamePage'>
             <Teams 
             nickname={props.nickname} 
-            admin={props.admin=='no admin yet'? props.nickname : props.admin}
+            admin={props.admin==='no admin yet'? props.nickname : props.admin}
             />
+            <ChatTest nickname={props.nickname}/>
         </div>
 
     </div>

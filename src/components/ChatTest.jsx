@@ -1,21 +1,20 @@
-
 import React, {useState, useEffect} from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import { Card, Avatar, Input, Typography, message } from 'antd';
+import { Card, Avatar, Input, Typography} from 'antd';
 import 'antd/dist/antd.css';
-import './index.css'
-const  HOST = window.location.origin.replace(/^http/, 'ws')
+
+//const  HOST = window.location.origin.replace(/^http/, 'ws')
 
 
 const { Search } = Input;
 const { Text } = Typography;
 const { Meta } = Card;
 
-const client = new W3CWebSocket(HOST);
+const client = new W3CWebSocket(`ws://127.0.0.1:4000`);
 
 function ChatTest(props) {
 
-    const [userName, setUserName]=useState(props.nickname)
+    //const [userName, setUserName]=useState(props.nickname)
     const [messages, setMessages]=useState([])
     const [searchVal, setSearchVal]=useState("")
 
@@ -45,9 +44,9 @@ function ChatTest(props) {
     })
 
   return (
-    <div className="main" id='wrapper'>
+    <div className="main" >
   
-    <div>
+    <div className='chat'>
       <div className="title">
         <Text id="main-heading" type="secondary" style={{ fontSize: '36px' }}>Game chat: {props.nickname}</Text>
       </div>
@@ -63,7 +62,7 @@ function ChatTest(props) {
       </div> 
       <div style={{ display: 'flex', flexDirection: 'column', paddingBottom: 50 }} id="messages">
         {messages.map((message,index) => 
-          <Card key={index} style={{ width: 300, margin: '16px 4px 0 4px', alignSelf: userName === message.user ? 'flex-end' : 'flex-start' }} loading={false}>
+          <Card key={index} style={{ width: 300, margin: '16px 4px 0 4px', alignSelf: props.nickname === message.user ? 'flex-end' : 'flex-start' }} loading={false}>
             <Meta
               avatar={
                 <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>{message.user[0].toUpperCase()}</Avatar>
