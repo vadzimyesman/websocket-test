@@ -29,7 +29,7 @@
     "ws": "^8.5.0"
   },
   "scripts": {
-    "start": "node ./server/server.js && npm build",
+    "start": "node ./server/index.js && npm build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
